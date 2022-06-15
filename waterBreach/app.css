@@ -17,3 +17,13 @@ body{
     border-radius: 50px;
     transition: top 500ms, left 500ms;
 }
+
+.player{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: 20px;
+    bottom: 20px;
+    background-color: #f39c12;
+    border-radius: 50%;
+}

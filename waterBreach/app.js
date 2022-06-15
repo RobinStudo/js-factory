@@ -1,18 +1,68 @@
-const guardElement = document.querySelector('.guard');
+const containerElement = document.getElementById('game-container');
+const guardElements = containerElement.getElementsByClassName('guard');
+const playerElement = containerElement.querySelector('.player');
 const guardVelocity = 50;
+const playerVelocity = 20;
 
 setInterval(() => {
-    const guardPosition = {
-        x: guardElement.offsetLeft,
-        y: guardElement.offsetTop,
+   if(random(3) === 1){
+       const guard = document.createElement('div');
+       guard.classList.add('guard');
+       containerElement.appendChild(guard);
+   }
+}, 5000);
+
+setInterval(() => {
+    for(let guardElement of guardElements){
+        const guardPosition = {
+            x: guardElement.offsetLeft,
+            y: guardElement.offsetTop,
+        };
+
+        guardPosition.x = updatePosition(guardPosition.x, guardElement.offsetWidth, document.body.offsetWidth);
+        guardPosition.y = updatePosition(guardPosition.y, guardElement.offsetHeight, document.body.offsetHeight);
+
+        guardElement.style.top = guardPosition.y + 'px';
+        guardElement.style.left = guardPosition.x + 'px';
+    }
+}, 500);
+
+document.addEventListener('keydown', e => {
+   switch (e.key) {
+       case 'z':
+       case 'ArrowUp':
+            movePlayer(0, -playerVelocity);
+           break;
+       case 'q':
+       case 'ArrowLeft':
+            movePlayer(-playerVelocity, 0);
+           break;
+       case 's':
+       case 'ArrowDown':
+            movePlayer(0, playerVelocity);
+           break;
+       case 'd':
+       case 'ArrowRight':
+            movePlayer(playerVelocity, 0);
+           break;
+   }
+});
+
+const movePlayer = (x, y) => {
+    const playerPosition = {
+        x: playerElement.offsetLeft,
+        y: playerElement.offsetTop,
     };
 
-    guardPosition.x = updatePosition(guardPosition.x, guardElement.offsetWidth, document.body.offsetWidth);
-    guardPosition.y = updatePosition(guardPosition.y, guardElement.offsetHeight, document.body.offsetHeight);
+    playerPosition.x = playerPosition.x + x;
+    playerPosition.y = playerPosition.y + y;
 
-    guardElement.style.top = guardPosition.y + 'px';
-    guardElement.style.left = guardPosition.x + 'px';
-}, 500);
+    playerPosition.x = limitPositionToContainer(playerPosition.x, playerElement.offsetWidth, containerElement.offsetWidth);
+    playerPosition.y = limitPositionToContainer(playerPosition.y, playerElement.offsetHeight, containerElement.offsetHeight);
+    
+    playerElement.style.top = playerPosition.y + 'px';
+    playerElement.style.left = playerPosition.x + 'px';
+}
 
 const updatePosition = (currentPosition, size, containerSize) => {
     const direction = random(3);
@@ -23,6 +73,10 @@ const updatePosition = (currentPosition, size, containerSize) => {
         currentPosition += guardVelocity;
     }
 
+    return limitPositionToContainer(currentPosition, size, containerSize);
+};
+
+const limitPositionToContainer = (currentPosition, size, containerSize) => {
     if(currentPosition < 0){
         currentPosition = 0;
     }else if(currentPosition + size > containerSize){

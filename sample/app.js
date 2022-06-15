@@ -1,13 +1,8 @@
-const log = () => {
-    console.log('bonjour');
-};
+const element = document.createElement('video');
 
-const timer = setTimeout(log, 2000);
+element.setAttribute('src', 'myVideo.mp4');
+element.classList.add('my-class');
+element.innerText = 'test';
 
-clearTimeout(timer);
+document.body.appendChild(element);
 
-const interval = setInterval(() => {
-    console.log('salut');
-}, 2000);
-
-clearInterval(interval);
