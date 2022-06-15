@@ -59,9 +59,11 @@ const movePlayer = (x, y) => {
 
     playerPosition.x = limitPositionToContainer(playerPosition.x, playerElement.offsetWidth, containerElement.offsetWidth);
     playerPosition.y = limitPositionToContainer(playerPosition.y, playerElement.offsetHeight, containerElement.offsetHeight);
-    
+
     playerElement.style.top = playerPosition.y + 'px';
     playerElement.style.left = playerPosition.x + 'px';
+
+    console.log(checkPlayerCollision());
 }
 
 const updatePosition = (currentPosition, size, containerSize) => {
@@ -84,6 +86,44 @@ const limitPositionToContainer = (currentPosition, size, containerSize) => {
     }
 
     return currentPosition;
+};
+
+const checkPlayerCollision = () => {
+    const p = {
+        top: playerElement.offsetTop,
+        left: playerElement.offsetLeft,
+        right: playerElement.offsetLeft + playerElement.offsetWidth,
+        bottom: playerElement.offsetTop + playerElement.offsetHeight,
+    };
+
+    for(let guardElement of guardElements){
+        const g = {
+            top: guardElement.offsetTop,
+            left: guardElement.offsetLeft,
+            right: guardElement.offsetLeft + guardElement.offsetWidth,
+            bottom: guardElement.offsetTop + guardElement.offsetHeight,
+        };
+
+        if(p.top > g.top && p.top < g.bottom){
+            if(p.left > g.left && p.left < g.right){
+                return true;
+            }
+            if(p.right < g.right && p.right > g.left){
+                return true;
+            }
+        }
+
+        if(p.bottom > g.top && p.bottom < g.bottom){
+            if(p.left > g.left && p.left < g.right){
+                return true;
+            }
+            if(p.right < g.right && p.right > g.left){
+                return true;
+            }
+        }
+    }
+
+    return false;
 };
 
 const random = (max) => {
