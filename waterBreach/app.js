@@ -15,7 +15,7 @@ replayButtonElement.addEventListener('click', () => {
     for(let guardElement of guardElements){
         guardElement.remove();
     }
-    
+
     createGuard();
     start();
 });

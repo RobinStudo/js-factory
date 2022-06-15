@@ -1,8 +1,7 @@
-const element = document.createElement('video');
+const formElement = document.querySelector('form');
 
-element.setAttribute('src', 'myVideo.mp4');
-element.classList.add('my-class');
-element.innerText = 'test';
-
-document.body.appendChild(element);
+formElement.addEventListener('submit', e => {
+    e.preventDefault();
+    console.log(e);
+});
 
