@@ -1,52 +1,58 @@
 const containerElement = document.getElementById('game-container');
+const endElement = document.getElementById('end');
 const guardElements = containerElement.getElementsByClassName('guard');
 const playerElement = containerElement.querySelector('.player');
 const guardVelocity = 50;
 const playerVelocity = 20;
+let generateTimer, loopTimer;
 
-setInterval(() => {
-   if(random(3) === 1){
-       const guard = document.createElement('div');
-       guard.classList.add('guard');
-       containerElement.appendChild(guard);
-   }
-}, 5000);
+const start = () => {
+    generateTimer = setInterval(() => {
+        if(random(3) === 1){
+            const guard = document.createElement('div');
+            guard.classList.add('guard');
+            containerElement.appendChild(guard);
+        }
+    }, 5000);
 
-setInterval(() => {
-    for(let guardElement of guardElements){
-        const guardPosition = {
-            x: guardElement.offsetLeft,
-            y: guardElement.offsetTop,
-        };
+    loopTimer = setInterval(() => {
+        for(let guardElement of guardElements){
+            const guardPosition = {
+                x: guardElement.offsetLeft,
+                y: guardElement.offsetTop,
+            };
 
-        guardPosition.x = updatePosition(guardPosition.x, guardElement.offsetWidth, document.body.offsetWidth);
-        guardPosition.y = updatePosition(guardPosition.y, guardElement.offsetHeight, document.body.offsetHeight);
+            guardPosition.x = updatePosition(guardPosition.x, guardElement.offsetWidth, document.body.offsetWidth);
+            guardPosition.y = updatePosition(guardPosition.y, guardElement.offsetHeight, document.body.offsetHeight);
 
-        guardElement.style.top = guardPosition.y + 'px';
-        guardElement.style.left = guardPosition.x + 'px';
-    }
-}, 500);
+            guardElement.style.top = guardPosition.y + 'px';
+            guardElement.style.left = guardPosition.x + 'px';
+        }
+    }, 500);
 
-document.addEventListener('keydown', e => {
-   switch (e.key) {
-       case 'z':
-       case 'ArrowUp':
+    document.addEventListener('keydown', handleKeyboard);
+};
+
+const handleKeyboard = e => {
+    switch (e.key) {
+        case 'z':
+        case 'ArrowUp':
             movePlayer(0, -playerVelocity);
-           break;
-       case 'q':
-       case 'ArrowLeft':
+            break;
+        case 'q':
+        case 'ArrowLeft':
             movePlayer(-playerVelocity, 0);
-           break;
-       case 's':
-       case 'ArrowDown':
+            break;
+        case 's':
+        case 'ArrowDown':
             movePlayer(0, playerVelocity);
-           break;
-       case 'd':
-       case 'ArrowRight':
+            break;
+        case 'd':
+        case 'ArrowRight':
             movePlayer(playerVelocity, 0);
-           break;
-   }
-});
+            break;
+    }
+};
 
 const movePlayer = (x, y) => {
     const playerPosition = {
@@ -63,7 +69,9 @@ const movePlayer = (x, y) => {
     playerElement.style.top = playerPosition.y + 'px';
     playerElement.style.left = playerPosition.x + 'px';
 
-    console.log(checkPlayerCollision());
+    if(checkPlayerCollision()){
+        gameOver();
+    }
 }
 
 const updatePosition = (currentPosition, size, containerSize) => {
@@ -126,6 +134,16 @@ const checkPlayerCollision = () => {
     return false;
 };
 
+const gameOver = () => {
+    clearInterval(generateTimer);
+    clearInterval(loopTimer);
+    document.removeEventListener('keydown', handleKeyboard);
+
+    endElement.classList.remove('hide');
+};
+
 const random = (max) => {
     return Math.floor(Math.random() * max);
 };
+
+start();
