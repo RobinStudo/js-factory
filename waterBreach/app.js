@@ -1,17 +1,31 @@
 const containerElement = document.getElementById('game-container');
 const endElement = document.getElementById('end');
+const replayButtonElement = document.querySelector('.replay');
 const guardElements = containerElement.getElementsByClassName('guard');
 const playerElement = containerElement.querySelector('.player');
 const guardVelocity = 50;
 const playerVelocity = 20;
-let generateTimer, loopTimer;
+let generateTimer, loopTimer, gameStartAt;
+
+replayButtonElement.addEventListener('click', () => {
+    endElement.classList.add('hide');
+    playerElement.style.top = 'unset';
+    playerElement.style.left = 'unset';
+
+    for(let guardElement of guardElements){
+        guardElement.remove();
+    }
+    
+    createGuard();
+    start();
+});
 
 const start = () => {
+    gameStartAt = Date.now();
+
     generateTimer = setInterval(() => {
         if(random(3) === 1){
-            const guard = document.createElement('div');
-            guard.classList.add('guard');
-            containerElement.appendChild(guard);
+            createGuard();
         }
     }, 5000);
 
@@ -31,6 +45,12 @@ const start = () => {
     }, 500);
 
     document.addEventListener('keydown', handleKeyboard);
+};
+
+const createGuard = () => {
+    const guard = document.createElement('div');
+    guard.classList.add('guard');
+    containerElement.appendChild(guard);
 };
 
 const handleKeyboard = e => {
@@ -138,6 +158,10 @@ const gameOver = () => {
     clearInterval(generateTimer);
     clearInterval(loopTimer);
     document.removeEventListener('keydown', handleKeyboard);
+
+    const score = Math.floor((Date.now() - gameStartAt) / 1000);
+    const scoreElement = endElement.querySelector('.score');
+    scoreElement.innerText = score;
 
     endElement.classList.remove('hide');
 };
