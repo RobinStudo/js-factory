@@ -34,7 +34,7 @@ header h1{
     align-items: center;
 }
 
-.start-container h2{
+section h2, section p{
     color: var(--light);
 }
 
