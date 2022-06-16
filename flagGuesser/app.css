@@ -34,6 +34,10 @@ header h1{
     align-items: center;
 }
 
+.start-container h2{
+    color: var(--light);
+}
+
 .challenge-container img{
     height: 220px;
 }
@@ -44,10 +48,14 @@ header h1{
     gap: 30px;
 }
 
-.challenge-responses button{
+button{
     border: none;
     background-color: var(--light);
     font-size: 1.4rem;
     padding: 10px 20px;
     cursor: pointer;
+}
+
+.hide{
+    display: none!important;
 }
