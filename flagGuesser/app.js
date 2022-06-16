@@ -1,10 +1,12 @@
 const countries = [];
 const currentChallenge = {};
 let score = 0;
+let bestScore = localStorage.getItem('bestScore') ?? 0;
 const elements = {
     startContainer: document.querySelector('.start-container'),
     challengeContainer: document.querySelector('.challenge-container'),
     endContainer: document.querySelector('.end-container'),
+    bestScore: document.querySelector('header .best-score'),
     loader: document.querySelector('.start-container .loader'),
     startButton: document.querySelector('.start-container button'),
     restartButton: document.querySelector('.end-container button'),
@@ -15,6 +17,7 @@ const elements = {
 };
 
 const init = () => {
+    displayBestScore();
     const apiUrl = 'https://restcountries.com/v3.1/all';
     fetch(apiUrl)
         .then(response => response.json())
@@ -89,6 +92,11 @@ const checkResponse = e => {
 
 const end = () => {
     elements.endScore.innerText = score;
+    if(bestScore < score){
+        bestScore = score;
+        localStorage.setItem('bestScore', bestScore);
+        displayBestScore();
+    }
 
     elements.challengeContainer.classList.add('hide');
     elements.endContainer.classList.remove('hide');
@@ -104,6 +112,10 @@ const restart = () => {
     score = 0;
 
     nextChallenge();
+};
+
+const displayBestScore = () => {
+    elements.bestScore.innerText = bestScore;
 };
 
 const getArrayRandomElement = array => {
