@@ -1,0 +1,16 @@
+body{
+    font-family: sans-serif;
+}
+
+#posts{
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.post{
+    background-color: #ecf0f1;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}

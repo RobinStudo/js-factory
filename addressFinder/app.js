@@ -4,6 +4,10 @@ const apiUrl = 'https://api-adresse.data.gouv.fr/search/';
 
 searchElement.addEventListener('input', () => {
     const query = searchElement.value;
+    if(query.length < 4){
+        return;
+    }
+
     const url = new URL(apiUrl);
     url.searchParams.set('q', query);
 
